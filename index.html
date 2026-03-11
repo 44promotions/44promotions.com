@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>44Promotions | Premium Promotional Products</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #fafbfc; color: #2d3436; }
+h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* Color Palette - Corn Yellow Theme */
+:root {
+  --primary: #F7DC6F;
+  --primary-dark: #D4AC0D;
+  --primary-light: #FCF3CF;
+  --secondary: #F39C12;
+  --bg-light: #FEF9E7;
+  --bg-white: #ffffff;
+  --text-dark: #1F2937;
+  --text-gray: #6B7280;
+  --border: #E5E7EB;
+}
+
+/* Top Bar */
+.top-bar { background: var(--bg-white); border-bottom: 1px solid var(--border); padding: 10px 0; font-size: 13px; }
+.top-bar a { color: var(--text-gray); transition: color 0.2s; }
+.top-bar a:hover { color: var(--primary); }
+
+/* Header */
+header { background: var(--bg-white); box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+.logo-text { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--text-dark); }
+.logo-text span { color: var(--primary); }
+.search-box { flex: 1; max-width: 480px; position: relative; }
+.search-box input { width: 100%; padding: 12px 50px 12px 20px; border: 2px solid var(--border); border-radius: 50px; outline: none; font-size: 14px; transition: border-color 0.2s; }
+.search-box input:focus { border-color: var(--primary); }
+.search-box button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--primary); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: background 0.2s; }
+.search-box button:hover { background: var(--primary-dark); }
+.header-actions a { color: var(--text-dark); font-size: 18px; margin-left: 20px; transition: color 0.2s; }
+.header-actions a:hover { color: var(--primary); }
+
+/* Navigation */
+nav { background: var(--bg-light); }
+.nav-category-btn { background: var(--primary); color: #fff; border: none; padding: 12px 24px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.nav-category-btn i { font-size: 14px; }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a { color: var(--text-dark); font-weight: 500; padding: 12px 0; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s; }
+.nav-links a:hover::after { width: 100%; }
+
+/* Hero Section */
+.hero { background: linear-gradient(135deg, #FEF9E7 0%, #FCF3CF 100%); padding: 60px 0; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(247,220,111,0.4) 0%, transparent 70%); border-radius: 50%; }
+.hero-content { position: relative; z-index: 1; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: 48px; margin-bottom: 16px; color: var(--text-dark); line-height: 1.2; }
+.hero p { font-size: 18px; color: var(--text-gray); margin-bottom: 24px; }
+.hero-btn { background: var(--primary-dark); color: #fff; padding: 14px 32px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; }
+.hero-btn:hover { background: #9A7D0A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212,172,13,0.3); }
+.hero-image { text-align: right; }
+.hero-image img { max-width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+/* Categories Section */
+.categories { padding: 60px 0; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 8px; }
+.section-subtitle { color: var(--text-gray); margin-bottom: 40px; }
+.category-card { background: var(--bg-white); border-radius: 16px; padding: 24px; text-align: center; border: 2px solid transparent; transition: all 0.3s; cursor: pointer; }
+.category-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.category-icon { width: 64px; height: 64px; background: var(--bg-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; color: var(--primary); }
+.category-card h4 { font-size: 16px; margin-bottom: 4px; }
+.category-card p { font-size: 13px; color: var(--text-gray); }
+
+/* Products Section */
+.products { padding: 60px 0; background: var(--bg-white); }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+.product-card { background: var(--bg-white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.product-image { position: relative; padding-top: 100%; background: var(--bg-light); }
+.product-image img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.product-badge { position: absolute; top: 12px; left: 12px; background: var(--secondary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.product-info { padding: 20px; }
+.product-category { font-size: 12px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.product-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+.product-price { display: flex; align-items: baseline; gap: 8px; }
+.price-current { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+.price-original { font-size: 14px; color: var(--text-gray); text-decoration: line-through; }
+.product-min { font-size: 12px; color: var(--text-gray); margin-top: 8px; }
+
+/* Features Section */
+.features { padding: 60px 0; background: var(--bg-light); }
+.feature-card { text-align: center; padding: 32px; }
+.feature-icon { width: 72px; height: 72px; background: var(--bg-white); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: var(--primary); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.feature-card h4 { margin-bottom: 8px; }
+.feature-card p { color: var(--text-gray); font-size: 14px; }
+
+/* Newsletter */
+.newsletter { padding: 60px 0; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+.newsletter h2 { color: #fff; margin-bottom: 8px; }
+.newsletter p { color: rgba(255,255,255,0.8); margin-bottom: 24px; }
+.newsletter-form { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
+.newsletter-form input { flex: 1; padding: 14px 20px; border: none; border-radius: 50px; font-size: 15px; }
+.newsletter-form button { background: var(--text-dark); color: #fff; border: none; padding: 14px 28px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.newsletter-form button:hover { background: #000; }
+
+/* Footer */
+footer { background: var(--text-dark); color: #fff; padding: 60px 0 30px; }
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
+.footer-col h4 { font-size: 16px; margin-bottom: 20px; color: #fff; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 14px; transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--primary); }
+.footer-col ul li span { color: rgba(255,255,255,0.7); font-size: 14px; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; }
+
+/* Responsive */
+@media (max-width: 991px) {
+  .hero h1 { font-size: 36px; }
+  .nav-links { display: none; }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  .hero { padding: 40px 0; text-align: center; }
+  .hero-image { display: none; }
+  .hero h1 { font-size: 28px; }
+  .newsletter-form { flex-direction: column; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="contact-info">
+        <a href="mailto:info@44promotions.com"><i class="fas fa-envelope"></i> info@44promotions.com</a>
+        <span class="mx-3">|</span>
+        <a href="tel:+18322661134"><i class="fas fa-phone"></i> (832) 266-1134</a>
+      </div>
+      <div class="top-links">
+        <a href="track-order.html">Track Order</a>
+        <span class="mx-2">|</span>
+        <a href="mailto:info@44promotions.com">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="container py-3">
+    <div class="d-flex align-items-center justify-content-between gap-4">
+      <a href="index.html"><img src="44-logo.png" alt="44Promotions" style="height: 50px;"></a>
+      <div class="search-box">
+        <input type="text" placeholder="Search by name, description or product ID..." id="searchInput">
+        <button><i class="fas fa-search"></i></button>
+      </div>
+      <div class="header-actions d-none d-md-flex">
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav>
+  <div class="container d-flex align-items-center justify-content-between">
+    <button class="nav-category-btn" onclick="toggleCategories()">
+      <i class="fas fa-bars"></i> Categories
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">All Products</a>
+      <a href="products.html?sort=new">New Arrivals</a>
+      <a href="products.html?sort=popular">Bestsellers</a>
+      <a href="custom-logo.html">Custom Logo</a>
+      <a href="custom-printing.html">Custom Printing</a>
+      <a href="mailto:info@44promotions.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 hero-content">
+        <h1>Premium Promotional Products for Your Brand</h1>
+        <p>Discover thousands of high-quality promotional items perfect for your business, event, or marketing campaign. Make a lasting impression with customized gifts.</p>
+        <a href="products.html" class="hero-btn">
+          <i class="fas fa-arrow-right"></i> Explore Products
+        </a>
+      </div>
+      <div class="col-lg-6 hero-image d-none d-lg-block">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=500&fit=crop" alt="Promotional Products">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Shop by Category</h2>
+      <p class="section-subtitle">Find the perfect promotional products for your needs</p>
+    </div>
+    <div class="row g-4" id="categoryGrid">
+      <!-- Categories loaded by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="products">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="section-title mb-1">Featured Products</h2>
+        <p class="section-subtitle mb-0">Handpicked favorites from our collection</p>
+      </div>
+      <a href="products.html" class="btn btn-outline-dark rounded-pill px-4">View All</a>
+    </div>
+    <div class="product-grid" id="productGrid">
+      <!-- Products loaded by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+          <h4>Fast Shipping</h4>
+          <p>Quick delivery on all orders with tracking</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-award"></i></div>
+          <h4>Quality Guaranteed</h4>
+          <p>Premium products from trusted manufacturers</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h4>24/7 Support</h4>
+          <p>Dedicated support team ready to help</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>44Promotions</h4>
+        <p style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6;">Forty Four Promotions Inc - Your trusted source for premium promotional products. Quality items for your brand visibility.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="custom-logo.html">Custom Logo</a></li>
+          <li><a href="custom-printing.html">Custom Printing</a></li>
+          <li><a href="mailto:info@44promotions.com">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="products.html?category=Bags & Travel">Bags & Backpacks</a></li>
+          <li><a href="products.html?category=Drinkware">Drinkware</a></li>
+          <li><a href="products.html?category=Office">Office Supplies</a></li>
+          <li><a href="products.html?category=Tech">Tech Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@44promotions.com">info@44promotions.com</a></li>
+          <li><a href="tel:+18322661134">T: (832) 266-1134</a></li>
+          <li><a href="tel:+18322181782">F: (832) 218-1782</a></li>
+          <li><span style="color: rgba(255,255,255,0.7); font-size: 14px;">440 Benmar Dr Suite 2017<br>Houston TX 77060</span></li>
+          <li><a href="https://44promotions.com">44promotions.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Forty Four Promotions Inc. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="products_data.js">
+
+function toggleCategories() {
+    alert('Categories dropdown - use category cards below to filter');
+}
+
+function filterByCategory(category) {
+    window.location.href = 'products.html?category=' + encodeURIComponent(category);
+}
+
+function viewProduct(id) {
+    window.location.href = 'product-detail.html?id=' + id;
+}
+
+function goHome() {
+    window.location.href = 'index.html';
+}
+
+function goProducts() {
+    window.location.href = 'products.html';
+}
+
+function trackOrder() {
+    window.location.href = 'track-order.html';
+}
+
+function contactUs() {
+    window.location.href = 'mailto:info@44promotions.com?subject=Contact Us';
+}
+
+function searchProducts() {
+    const query = document.getElementById('searchInput').value;
+    if (query) {
+        window.location.href = 'products.html?search=' + encodeURIComponent(query);
+    }
+}
+
+function signIn() {
+    window.location.href='login.html';
+}
+
+function register() {
+    window.location.href='register.html';
+}
+
+function addToCart() {
+    window.location.href='cart.html';
+}
+
+function goToWishlist() {
+    window.location.href='wishlist.html';
+}
+
+// Update header buttons
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchProducts();
+    }
+});
+</script>
+<script>
+// Categories data
+const categories = [
+  { name: 'Outdoor & Sports', icon: 'fa-football-ball', count: 59 },
+  { name: 'Bags & Travel', icon: 'fa-suitcase', count: 49 },
+  { name: 'Home & Living', icon: 'fa-home', count: 42 },
+  { name: 'Drinkware', icon: 'fa-glass-water', count: 34 },
+  { name: 'Office', icon: 'fa-pen', count: 34 },
+  { name: 'Tech', icon: 'fa-mobile-alt', count: 31 },
+  { name: 'Keychains', icon: 'fa-key', count: 17 },
+  { name: 'Health & Beauty', icon: 'fa-heart', count: 15 },
+];
+
+// Render categories
+const categoryGrid = document.getElementById('categoryGrid');
+categories.forEach(cat => {
+  categoryGrid.innerHTML += `
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="category-card" onclick="filterByCategory('${cat.name}')">
+        <div class="category-icon"><i class="fas ${cat.icon}"></i></div>
+        <h4>${cat.name}</h4>
+        <p>${cat.count} products</p>
+      </div>
+    </div>
+  `;
+});
+
+// Render products
+const productGrid = document.getElementById('productGrid');
+const displayProducts = products.slice(0, 8);
+displayProducts.forEach(product => {
+  const prices = [product.price1, product.price2, product.price3, product.price4, product.price5, product.price6].filter(p => p);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const priceRange = minPrice === maxPrice 
+    ? `$${minPrice.toFixed(2)}` 
+    : `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
+  productGrid.innerHTML += `
+    <div class="product-card" onclick="viewProduct('${product.id}')">
+      <div class="product-image">
+        <img loading="lazy" src="${product.images1 || 'https://via.placeholder.com/300'}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+      </div>
+      <div class="product-info">
+        <h4 class="product-title">${product.name}</h4>
+        <div class="product-price">
+          <span class="price-current">${priceRange}</span>
+        </div>
+      </div>
+    </div>
+  `;
+});
+
+// Functions
+function toggleCategories() {
+  alert('Categories dropdown coming soon!');
+}
+
+function filterByCategory(category) {
+  window.location.href = 'products.html?category=' + encodeURIComponent(category);
+}
+
+function viewProduct(id) {
+  window.location.href = 'product-detail.html?id=' + id;
+}
+
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    window.location.href = 'products.html?search=' + encodeURIComponent(this.value);
+  }
+});
+
+
+// Button Functions
+function toggleCategories() {
+    alert('Categories dropdown - use category cards below to filter');
+}
+
+function filterByCategory(category) {
+    window.location.href = 'products.html?category=' + encodeURIComponent(category);
+}
+
+function viewProduct(id) {
+    window.location.href = 'product-detail.html?id=' + id;
+}
+
+function goHome() {
+    window.location.href = 'index.html';
+}
+
+function goProducts() {
+    window.location.href = 'products.html';
+}
+
+function trackOrder() {
+    window.location.href = 'track-order.html';
+}
+
+function contactUs() {
+    window.location.href = 'mailto:info@44promotions.com?subject=Contact Us';
+}
+
+function searchProducts() {
+    const query = document.getElementById('searchInput').value;
+    if (query) {
+        window.location.href = 'products.html?search=' + encodeURIComponent(query);
+    }
+}
+
+function signIn() {
+    window.location.href='login.html';
+}
+
+function register() {
+    window.location.href='register.html';
+}
+
+function addToCart() {
+    window.location.href='cart.html';
+}
+
+function goToWishlist() {
+    window.location.href='wishlist.html';
+}
+
+// Update header buttons
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchProducts();
+    }
+});
+</script>
+
+</body>
+</html>

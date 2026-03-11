@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Categories | 44Promotions Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #f3f4f6; }
+.sidebar { width: 260px; background: #1F2937; min-height: 100vh; position: fixed; left: 0; top: 0; }
+.sidebar-logo { padding: 20px; border-bottom: 1px solid #374151; }
+.sidebar-logo img { height: 40px; }
+.sidebar-logo h3 { color: #fff; font-size: 18px; margin-top: 10px; }
+.sidebar-menu { padding: 20px 0; }
+.menu-item { display: block; padding: 14px 24px; color: #9CA3AF; text-decoration: none; transition: all 0.2s; }
+.menu-item:hover, .menu-item.active { background: #374151; color: #F7DC6F; }
+.menu-item i { width: 24px; }
+.main-content { margin-left: 260px; padding: 30px; }
+.top-bar { background: #fff; padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; margin: -30px -30px 30px -30px; }
+.top-bar h4 { margin: 0; color: #1F2937; }
+.btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; }
+.btn-primary { background: #D4AC0D; color: #fff; }
+.btn-danger { background: #DC2626; color: #fff; }
+.btn-secondary { background: #6B7280; color: #fff; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.category-card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.category-header h5 { margin: 0; font-size: 18px; }
+.category-stats { display: flex; gap: 20px; margin-bottom: 16px; }
+.category-stat { text-align: center; }
+.category-stat .number { font-size: 24px; font-weight: 700; color: #1F2937; }
+.category-stat .label { font-size: 12px; color: #6B7280; }
+.category-actions { display: flex; gap: 8px; }
+.add-category { background: #fff; border: 2px dashed #D1D5DB; border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+.add-category:hover { border-color: #D4AC0D; color: #D4AC0D; }
+.add-category i { font-size: 32px; margin-right: 12px; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+.modal.show { display: flex; align-items: center; justify-content: center; }
+.modal-content { background: #fff; border-radius: 20px; width: 90%; max-width: 500px; }
+.modal-header { padding: 24px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 24px; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 12px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+.form-group input { width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="../44-logo.png" alt="44Promotions">
+    <h3>Admin Panel</h3>
+  </div>
+  <div class="sidebar-menu">
+    <a href="dashboard.html" class="menu-item"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="products.html" class="menu-item"><i class="fas fa-box"></i> Products</a>
+    <a href="categories.html" class="menu-item active"><i class="fas fa-tags"></i> Categories</a>
+    <a href="orders.html" class="menu-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+    <a href="inquiries.html" class="menu-item"><i class="fas fa-envelope"></i> Inquiries</a>
+    <a href="settings.html" class="menu-item"><i class="fas fa-cog"></i> Settings</a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="top-bar">
+    <h4>Categories Management</h4>
+    <div class="user-info">
+      <span id="adminName">Admin</span>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="categories-grid" id="categoriesGrid">
+    <!-- Categories loaded by JS -->
+  </div>
+</div>
+
+<div class="modal" id="categoryModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add/Edit Category</h3>
+      <button onclick="closeModal()" style="background: none; border: none; font-size: 24px;">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" id="categoryName" placeholder="e.g., Bags & Travel">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCategory()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+if (localStorage.getItem('adminLoggedIn') !== 'true') window.location.href = 'index.html';
+document.getElementById('adminName').textContent = localStorage.getItem('adminUser') || 'Admin';
+
+let categories = [
+  { name: 'Bags & Travel', count: 49, active: 45 },
+  { name: 'Drinkware', count: 34, active: 30 },
+  { name: 'Office', count: 34, active: 32 },
+  { name: 'Tech', count: 31, active: 28 },
+  { name: 'Outdoor & Sports', count: 59, active: 55 },
+  { name: 'Home & Living', count: 42, active: 38 },
+  { name: 'Keychains', count: 17, active: 15 },
+  { name: 'Health & Beauty', count: 15, active: 14 }
+];
+
+function renderCategories() {
+  const grid = document.getElementById('categoriesGrid');
+  grid.innerHTML = categories.map(cat => `
+    <div class="category-card">
+      <div class="category-header">
+        <h5>${cat.name}</h5>
+      </div>
+      <div class="category-stats">
+        <div class="category-stat">
+          <div class="number">${cat.count}</div>
+          <div class="label">Total</div>
+        </div>
+        <div class="category-stat">
+          <div class="number">${cat.active}</div>
+          <div class="label">Active</div>
+        </div>
+        <div class="category-stat">
+          <div class="number">${cat.count - cat.active}</div>
+          <div class="label">Inactive</div>
+        </div>
+      </div>
+      <div class="category-actions">
+        <button class="btn btn-primary btn-sm" onclick="alert('Edit category: ${cat.name}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCategory('${cat.name}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="add-category" onclick="openModal()">
+      <i class="fas fa-plus"></i>
+      <span>Add Category</span>
+    </div>
+  `;
+}
+
+function openModal() {
+  document.getElementById('categoryModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('categoryModal').classList.remove('show');
+}
+
+function saveCategory() {
+  const name = document.getElementById('categoryName').value;
+  if (name) {
+    categories.push({ name, count: 0, active: 0 });
+    renderCategories();
+    closeModal();
+  }
+}
+
+function deleteCategory(name) {
+  if (confirm('Delete category: ' + name + '?')) {
+    categories = categories.filter(c => c.name !== name);
+    renderCategories();
+  }
+}
+
+function logout() {
+  localStorage.removeItem('adminLoggedIn');
+  localStorage.removeItem('adminUser');
+  window.location.href = 'index.html';
+}
+
+renderCategories();
+</script>
+
+</body>
+</html>

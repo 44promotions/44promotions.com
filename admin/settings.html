@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings | 44Promotions Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #f3f4f6; }
+.sidebar { width: 260px; background: #1F2937; min-height: 100vh; position: fixed; }
+.sidebar-logo { padding: 20px; border-bottom: 1px solid #374151; }
+.sidebar-logo img { height: 40px; }
+.sidebar-logo h3 { color: #fff; font-size: 18px; margin-top: 10px; }
+.sidebar-menu { padding: 20px 0; }
+.menu-item { display: block; padding: 14px 24px; color: #9CA3AF; text-decoration: none; }
+.menu-item:hover, .menu-item.active { background: #374151; color: #F7DC6F; }
+.menu-item i { width: 24px; }
+.main-content { margin-left: 260px; padding: 30px; }
+.top-bar { background: #fff; padding: 16px 30px; display: flex; justify-content: space-between; border-bottom: 1px solid #E5E7EB; margin: -30px -30px 30px -30px; }
+.settings-section { background: #fff; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.settings-section h4 { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #E5E7EB; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #1F2937; }
+.form-group input { width: 100%; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px; }
+.btn { padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500; }
+.btn-primary { background: #D4AC0D; color: #fff; }
+.btn-secondary { background: #6B7280; color: #fff; }
+.btn-danger { background: #DC2626; color: #fff; }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="../44-logo.png" alt="44Promotions">
+    <h3>Admin Panel</h3>
+  </div>
+  <div class="sidebar-menu">
+    <a href="dashboard.html" class="menu-item"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="products.html" class="menu-item"><i class="fas fa-box"></i> Products</a>
+    <a href="categories.html" class="menu-item"><i class="fas fa-tags"></i> Categories</a>
+    <a href="orders.html" class="menu-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+    <a href="inquiries.html" class="menu-item"><i class="fas fa-envelope"></i> Inquiries</a>
+    <a href="settings.html" class="menu-item active"><i class="fas fa-cog"></i> Settings</a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="top-bar">
+    <h4>Settings</h4>
+    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="settings-section">
+    <h4>Company Information</h4>
+    <div class="form-group">
+      <label>Company Name</label>
+      <input type="text" id="companyName" value="Forty Four Promotions Inc">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="companyEmail" value="info@44promotions.com">
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" id="companyPhone" value="(832) 266-1134">
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" id="companyAddress" value="440 Benmar Dr Suite 2017, Houston TX 77060">
+    </div>
+    <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+  </div>
+
+  <div class="settings-section">
+    <h4>Admin Account</h4>
+    <div class="form-group">
+      <label>Change Password</label>
+      <input type="password" id="newPassword" placeholder="New password">
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Confirm password">
+    </div>
+    <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+  </div>
+
+  <div class="settings-section">
+    <h4>Data Management</h4>
+    <p style="color: #6B7280; margin-bottom: 16px;">Export or reset your data</p>
+    <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Export Products</button>
+    <button class="btn btn-danger" onclick="resetData()"><i class="fas fa-trash"></i> Reset All Data</button>
+  </div>
+</div>
+
+<script>
+if (localStorage.getItem('adminLoggedIn') !== 'true') window.location.href = 'index.html';
+
+function saveSettings() {
+  const settings = {
+    companyName: document.getElementById('companyName').value,
+    companyEmail: document.getElementById('companyEmail').value,
+    companyPhone: document.getElementById('companyPhone').value,
+    companyAddress: document.getElementById('companyAddress').value
+  };
+  localStorage.setItem('adminSettings', JSON.stringify(settings));
+  alert('Settings saved successfully!');
+}
+
+function changePassword() {
+  const newPass = document.getElementById('newPassword').value;
+  const confirmPass = document.getElementById('confirmPassword').value;
+  
+  if (!newPass || !confirmPass) {
+    alert('Please fill in both fields');
+    return;
+  }
+  
+  if (newPass !== confirmPass) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  alert('Password changed successfully! (Demo - not actually changed)');
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+}
+
+function exportData() {
+  const products = localStorage.getItem('adminProducts');
+  if (products) {
+    const blob = new Blob([products], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products-export.json';
+    a.click();
+  } else {
+    alert('No products to export');
+  }
+}
+
+function resetData() {
+  if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+    localStorage.removeItem('adminProducts');
+    localStorage.removeItem('adminInquiries');
+    alert('Data reset successfully!');
+  }
+}
+
+function logout() {
+  localStorage.removeItem('adminLoggedIn');
+  localStorage.removeItem('adminUser');
+  window.location.href = 'index.html';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track Order | 44Promotions</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:#f5f5f5;color:#333}
+h1,h2,h3{font-family:'Oswald',sans-serif}
+.navbar{background:#1e3c72;padding:15px 0}
+.navbar a{color:#fff;text-decoration:none;font-size:22px;font-weight:700}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.track-box{max-width:600px;margin:40px auto;background:#fff;border-radius:12px;padding:40px;box-shadow:0 4px20px rgba(0,0,0,0.1)}
+.track-box h2{text-align:center;margin-bottom:10px;color:#1e3c72}
+.track-box p{text-align:center;color:#666;margin-bottom:30px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;margin-bottom:8px;font-weight:600}
+.form-group input{width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;font-size:16px}
+.btn-track{width:100%;background:#1e3c72;color:#fff;border:none;padding:16px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer}
+.btn-track:hover{background:#2a5298}
+.btn-track:disabled{background:#ccc;cursor:not-allowed}
+
+/* Tracking Result */
+.tracking-result{margin-top:30px;display:none}
+.tracking-result.show{display:block}
+.tracking-header{background:#f9f9f9;padding:20px;border-radius:8px;margin-bottom:20px}
+.tracking-header h3{margin-bottom:5px}
+.tracking-header .status{color:#16a34a;font-weight:600}
+.tracking-header .status.pending{color:#f59e0b}
+.tracking-header .status.delivered{color:#16a34a}
+.tracking-header .status.in_transit{color:#2563eb}
+.tracking-steps{margin-top:20px}
+.step{display:flex;gap:20px;margin-bottom:20px;position:relative}
+.step::before{content:'';position:absolute;left:15px;top:35px;bottom:-20px;width:2px;background:#e5e5e5}
+.step:last-child::before{display:none}
+.step:last-child{margin-bottom:0}
+.step-num{width:32px;height:32px;background:#e5e5e5;color:#666;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px}
+.step.active .step-num{background:#1e3c72;color:#fff}
+.step.active::before{background:#1e3c72}
+.step-content{flex:1;padding-top:5px}
+.step-content h4{font-size:14px;margin-bottom:3px}
+.step-content p{color:#666;font-size:13px;margin:0}
+.step-content .date{color:#999;font-size:12px;margin-top:3px}
+.back-link{text-align:center;margin-top:30px}
+.back-link a{color:#1e3c72}
+.error-msg{background:#fee2e2;color:#dc2626;padding:15px;border-radius:8px;margin-top:20px;display:none}
+.error-msg.show{display:block}
+.loading{display:none;text-align:center;padding:20px}
+.loading.show{display:block}
+.loading i{font-size:30px;color:#1e3c72;animation:spin 1s linear infinite}
+@keyframes spin{100%{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="container">
+<a href="index.html">44Promotions</a>
+</div>
+</nav>
+<div class="container">
+<div class="track-box">
+<h2>Track Your Order</h2>
+<p>Enter your tracking number to get real-time updates</p>
+
+<!-- Tracking Form -->
+<form id="trackForm" onsubmit="trackOrder(event)">
+<div class="form-group">
+<label>Tracking Number</label>
+<input type="text" id="trackingNumber" placeholder="e.g., 1234567890" required>
+</div>
+<div class="form-group">
+<label>Carrier (Optional)</label>
+<select id="carrier">
+<option value="">Auto-detect</option>
+<option value="usps">USPS</option>
+<option value="ups">UPS</option>
+<option value="fedex">FedEx</option>
+<option value="dhl">DHL</option>
+</select>
+</div>
+<button type="submit" class="btn-track" id="trackBtn">Track Order</button>
+</form>
+
+<!-- Loading -->
+<div class="loading" id="loading">
+<i class="fas fa-spinner"></i>
+<p>Searching for your package...</p>
+</div>
+
+<!-- Error Message -->
+<div class="error-msg" id="errorMsg"></div>
+
+<!-- Tracking Result -->
+<div class="tracking-result" id="trackingResult">
+<div class="tracking-header">
+<h3 id="resultTitle">Order Status</h3>
+<p class="status" id="resultStatus"></p>
+<p id="resultDesc"></p>
+</div>
+<h4>Tracking History</h4>
+<div class="tracking-steps" id="trackingSteps"></div>
+</div>
+
+</div>
+<div class="back-link">
+<a href="index.html">← Back to Home</a>
+</div>
+</div>
+
+<!-- AfterShip API Integration -->
+<script>
+// AfterShip API Configuration
+// Sign up at https://aftership.com to get your API key
+const AFTERSHIP_API_KEY = 'YOUR_AFTSHIP_API_KEY'; // Replace with your AfterShip API Key
+const AFTERSHIP_API_URL = 'https://api.aftership.com/v4/trackings';
+
+async function trackOrder(event) {
+    event.preventDefault();
+    
+    const trackingNumber = document.getElementById('trackingNumber').value.trim();
+    const carrier = document.getElementById('carrier').value;
+    const trackBtn = document.getElementById('trackBtn');
+    const loading = document.getElementById('loading');
+    const errorMsg = document.getElementById('errorMsg');
+    const result = document.getElementById('trackingResult');
+    
+    // Reset UI
+    errorMsg.classList.remove('show');
+    result.classList.remove('show');
+    trackBtn.disabled = true;
+    loading.classList.add('show');
+    
+    try {
+        // Using AfterShip API
+        let url = AFTERSHIP_API_URL + '/';
+        
+        if (carrier) {
+            url += carrier + '/' + trackingNumber;
+        } else {
+            url += trackingNumber;
+        }
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'aftership-api-key': AFTERSHIP_API_KEY
+            }
+        });
+        
+        const data = await response.json();
+        
+        loading.classList.remove('show');
+        
+        if (data.code === 200 && data.data && data.data.tracking) {
+            displayTrackingResult(data.data.tracking);
+        } else if (data.code === 404) {
+            // Demo mode - show sample tracking for demo purposes
+            showDemoTracking(trackingNumber);
+        } else {
+            throw new Error(data.message || 'Tracking not found');
+        }
+    } catch (error) {
+        loading.classList.remove('show');
+        
+        // If API fails, show demo tracking for demonstration
+        console.log('API Error:', error.message);
+        showDemoTracking(trackingNumber);
+    }
+    
+    trackBtn.disabled = false;
+}
+
+function displayTrackingResult(tracking) {
+    const result = document.getElementById('trackingResult');
+    const title = document.getElementById('resultTitle');
+    const status = document.getElementById('resultStatus');
+    const desc = document.getElementById('resultDesc');
+    const stepsContainer = document.getElementById('trackingSteps');
+    
+    title.textContent = tracking.title || 'Package';
+    
+    // Status mapping
+    const statusMap = {
+        'Delivered': { text: 'Delivered', class: 'delivered' },
+        'In Transit': { text: 'In Transit', class: 'in_transit' },
+        'Out For Delivery': { text: 'Out for Delivery', class: 'in_transit' },
+        'Pending': { text: 'Pending', class: 'pending' },
+        'Exception': { text: 'Exception', class: 'pending' },
+        'Returned': { text: 'Returned', class: 'pending' }
+    };
+    
+    const statusInfo = statusMap[tracking.tag] || { text: tracking.tag, class: 'pending' };
+    status.textContent = statusInfo.text;
+    status.className = 'status ' + statusInfo.class;
+    desc.textContent = tracking.origin_country_name + ' → ' + tracking.destination_country_name;
+    
+    // Display checkpoints
+    let stepsHtml = '';
+    if (tracking.checkpoints && tracking.checkpoints.length > 0) {
+        tracking.checkpoints.forEach((checkpoint, index) => {
+            const isActive = index === 0 ? 'active' : '';
+            const date = new Date(checkpoint.created_at).toLocaleDateString('en-US', {
+                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            stepsHtml += `
+                <div class="step ${isActive}">
+                    <div class="step-num">${index + 1}</div>
+                    <div class="step-content">
+                        <h4>${checkpoint.tag}</h4>
+                        <p>${checkpoint.location || ''}</p>
+                        <p class="date">${date}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    stepsContainer.innerHTML = stepsHtml || '<p>No tracking history available</p>';
+    result.classList.add('show');
+}
+
+// Demo tracking for demonstration when API is not configured
+function showDemoTracking(trackingNumber) {
+    const loading = document.getElementById('loading');
+    loading.classList.remove('show');
+    
+    const result = document.getElementById('trackingResult');
+    const title = document.getElementById('resultTitle');
+    const status = document.getElementById('resultStatus');
+    const desc = document.getElementById('resultDesc');
+    const stepsContainer = document.getElementById('trackingSteps');
+    
+    title.textContent = 'Package: ' + trackingNumber;
+    status.textContent = 'In Transit';
+    status.className = 'status in_transit';
+    desc.textContent = 'USA → USA';
+    
+    // Demo tracking history
+    const today = new Date();
+    const steps = [
+        { tag: 'Delivered', location: 'New York, NY', days: 0 },
+        { tag: 'Out for Delivery', location: 'New York, NY', days: 1 },
+        { tag: 'Arrived at Facility', location: 'New York, NY', days: 2 },
+        { tag: 'In Transit', location: 'Chicago, IL', days: 3 },
+        { tag: 'Shipped', location: 'Los Angeles, CA', days: 5 },
+        { tag: 'Order Processed', location: 'Warehouse', days: 6 }
+    ];
+    
+    let stepsHtml = '';
+    steps.forEach((step, index) => {
+        const date = new Date(today);
+        date.setDate(date.getDate() - step.days);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const isActive = index === 0 ? 'active' : '';
+        
+        stepsHtml += `
+            <div class="step ${isActive}">
+                <div class="step-num">${index + 1}</div>
+                <div class="step-content">
+                    <h4>${step.tag}</h4>
+                    <p>${step.location}</p>
+                    <p class="date">${dateStr}</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    stepsContainer.innerHTML = stepsHtml;
+    result.classList.add('show');
+}
+</script>
+</body>
+</html>

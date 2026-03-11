@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom Printing Services | 44Promotions</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #fafbfc; color: #2d3436; }
+:root {
+  --primary: #F7DC6F;
+  --primary-dark: #D4AC0D;
+  --primary-light: #FCF3CF;
+  --bg-light: #FEF9E7;
+  --bg-white: #ffffff;
+  --text-dark: #1F2937;
+  --text-gray: #6B7280;
+  --border: #E5E7EB;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* Header */
+header { background: var(--bg-white); border-bottom: 1px solid var(--border); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+.logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+.search-bar { flex: 1; max-width: 500px; position: relative; }
+.search-bar input { width: 100%; padding: 12px 50px 12px 20px; border: 2px solid var(--border); border-radius: 50px; font-size: 14px; outline: none; }
+.search-bar input:focus { border-color: var(--primary); }
+.search-bar button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--primary); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
+
+/* Hero Banner */
+.hero-banner { background: linear-gradient(135deg, #FEF9E7 0%, #FCF3CF 100%); padding: 60px 0; text-align: center; }
+.hero-banner h1 { font-family: 'Playfair Display', serif; font-size: 42px; margin-bottom: 16px; color: var(--text-dark); }
+.hero-banner p { font-size: 18px; color: var(--text-gray); max-width: 600px; margin: 0 auto; }
+
+/* Content */
+.content-section { padding: 60px 0; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 20px; color: var(--text-dark); }
+.content-box { background: var(--bg-white); border-radius: 20px; padding: 40px; border: 1px solid var(--border); margin-bottom: 30px; }
+.content-box h3 { font-size: 22px; margin-bottom: 16px; color: var(--primary-dark); }
+.content-box p { color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; }
+.content-box ul { list-style: none; padding: 0; }
+.content-box ul li { padding: 12px 0; border-bottom: 1px solid var(--border); color: var(--text-gray); }
+.content-box ul li:last-child { border-bottom: none; }
+.content-box ul li i { color: var(--primary-dark); margin-right: 10px; }
+
+.print-methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.print-method { background: var(--bg-white); border-radius: 16px; padding: 30px; border: 1px solid var(--border); }
+.print-method h4 { margin-bottom: 12px; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+.print-method h4 i { color: var(--primary-dark); }
+.print-method p { font-size: 14px; color: var(--text-gray); }
+.print-method .best-for { display: inline-block; background: var(--primary-light); color: var(--primary-dark); padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 12px; }
+
+.comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+.comparison-table th, .comparison-table td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border); }
+.comparison-table th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+.comparison-table td { color: var(--text-gray); }
+.comparison-table tr:hover { background: var(--bg-light); }
+
+.faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-item h4 { margin-bottom: 10px; color: var(--text-dark); }
+.faq-item p { color: var(--text-gray); margin: 0; }
+
+/* CTA */
+.cta-section { background: var(--primary); padding: 40px 0; text-align: center; }
+.cta-section h2 { margin-bottom: 16px; }
+.cta-btn { background: var(--primary-dark); color: #fff; padding: 14px 32px; border-radius: 50px; font-weight: 600; display: inline-block; transition: all 0.3s; }
+.cta-btn:hover { background: #9A7D0A; transform: translateY(-2px); }
+
+/* Footer */
+footer { background: var(--text-dark); color: #fff; padding: 60px 0 30px; }
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
+.footer-col h4 { font-size: 16px; margin-bottom: 20px; color: #fff; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: rgba(255,255,255,0.7); font-size: 14px; transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--primary); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; }
+
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-banner h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="container">
+    <div class="d-flex align-items-center gap-4">
+      <a href="index.html"><img src="44-logo.png" alt="44Promotions" style="height: 50px;"></a>
+      <div class="search-bar">
+        <input type="text" placeholder="Search products...">
+        <button><i class="fas fa-search"></i></button>
+      </div>
+      <a href="index.html" class="btn btn-outline-secondary rounded-pill d-none d-md-block"><i class="fas fa-home"></i></a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero Banner -->
+<section class="hero-banner">
+  <div class="container">
+    <h1>Custom Printing Services</h1>
+    <p>Professional printing solutions for all your promotional products. From single items to bulk orders, we deliver exceptional quality.</p>
+  </div>
+</section>
+
+<!-- Content -->
+<section class="content-section">
+  <div class="container">
+    
+    <div class="content-box">
+      <h3>Printing Methods We Offer</h3>
+      <div class="print-methods">
+        <div class="print-method">
+          <h4><i class="fas fa-clone"></i> Screen Printing</h4>
+          <p>The most popular method for promotional products. Ink is pushed through a mesh stencil onto the product. Creates vibrant, long-lasting colors.</p>
+          <span class="best-for">Best for: T-shirts, hoodies, tote bags</span>
+        </div>
+        <div class="print-method">
+          <h4><i class="fas fa-th"></i> Embroidery</h4>
+          <p>Thread is sewn directly into the fabric for a premium, textured look. Extremely durable and professional appearance.</p>
+          <span class="best-for">Best for: Caps, polo shirts, jackets, bags</span>
+        </div>
+        <div class="print-method">
+          <h4><i class="fas fa-expand"></i> Heat Transfer</h4>
+          <p>Design is printed on special paper and heat-pressed onto the product. Perfect for full-color designs and complex artwork.</p>
+          <span class="best-for">Best for: Small orders, full-color logos</span>
+        </div>
+        <div class="print-method">
+          <h4><i class="fas fa-fire"></i> Laser Engraving</h4>
+          <p>Laser burns the design into the surface for a permanent, premium finish. No ink or decals - it's part of the product itself.</p>
+          <span class="best-for">Best for: Pens, drinkware, metal items</span>
+        </div>
+        <div class="print-method">
+          <h4><i class="fas fa-print"></i> Digital Printing</h4>
+          <p>Direct-to-product digital printing allows for photographic quality and unlimited colors. No setup fees or minimums.</p>
+          <span class="best-for">Best for: Complex designs, small quantities</span>
+        </div>
+        <div class="print-method">
+          <h4><i class="fas fa-cube"></i> Sublimation</h4>
+          <p>Ink is infused into the product surface for vibrant, full-coverage prints that won't fade or crack over time.</p>
+          <span class="best-for">Best for: Mugs, mouse pads, phone cases</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h3>Printing Comparison</h3>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Min Quantity</th>
+            <th>Colors</th>
+            <th>Durability</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Screen Printing</td>
+            <td>50+</td>
+            <td>Up to 6</td>
+            <td>Excellent</td>
+            <td>Bulk orders</td>
+          </tr>
+          <tr>
+            <td>Embroidery</td>
+            <td>12+</td>
+            <td>Unlimited</td>
+            <td>Excellent</td>
+            <td>Premium apparel</td>
+          </tr>
+          <tr>
+            <td>Heat Transfer</td>
+            <td>1+</td>
+            <td>Full Color</td>
+            <td>Good</td>
+            <td>Small orders</td>
+          </tr>
+          <tr>
+            <td>Laser Engraving</td>
+            <td>1+</td>
+            <td>1 (etch)</td>
+            <td>Excellent</td>
+            <td>Metal/wood items</td>
+          </tr>
+          <tr>
+            <td>Digital Printing</td>
+            <td>1+</td>
+            <td>Full Color</td>
+            <td>Good</td>
+            <td>Complex designs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-box">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <h4>What file formats do you accept?</h4>
+        <p>We accept AI, EPS, PDF, SVG, PNG, and high-resolution JPG files. Vector formats (AI, EPS, PDF) are preferred for best print quality.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What is the minimum order quantity?</h4>
+        <p>Minimum quantities vary by product and printing method. Screen printing typically requires 50+ items, while digital printing can be as low as 1 piece.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How long does production take?</h4>
+        <p>Production time typically takes 7-14 business days after proof approval. Rush services are available for an additional fee.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Will I see a proof before production?</h4>
+        <p>Yes! We provide a digital proof for your approval before any production begins. This ensures your logo looks exactly as expected.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I get color matching?</h4>
+        <p>Yes, we can match PMS (Pantone) color codes for an accurate brand color match. Just provide your color codes when uploading your logo.</p>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h3>Ready to Get Started?</h3>
+      <p>Contact our team today to discuss your custom printing needs. We'll help you choose the right products and printing method for your budget and timeline.</p>
+      <p><strong>Email:</strong> info@44promotions.com<br>
+      <strong>Phone:</strong> (832) 266-1134</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Start Your Custom Order</h2>
+    <a href="products.html" class="cta-btn">Browse Products</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>44Promotions</h4>
+        <p style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6;">Forty Four Promotions Inc - Your trusted source for premium promotional products.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="custom-printing.html">Custom Printing</a></li>
+          <li><a href="mailto:info@44promotions.com">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="products.html?category=Bags & Travel">Bags & Backpacks</a></li>
+          <li><a href="products.html?category=Drinkware">Drinkware</a></li>
+          <li><a href="products.html?category=Office">Office Supplies</a></li>
+          <li><a href="products.html?category=Tech">Tech Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@44promotions.com">info@44promotions.com</a></li>
+          <li><a href="tel:+18322661134">T: (832) 266-1134</a></li>
+          <li><a href="tel:+18322181782">F: (832) 218-1782</a></li>
+          <li><span style="color: rgba(255,255,255,0.7); font-size: 14px;">440 Benmar Dr Suite 2017<br>Houston TX 77060</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Forty Four Promotions Inc. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

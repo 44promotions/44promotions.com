@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopping Cart | 44Promotions</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:#f5f5f5;color:#333}
+h1,h2{font-family:'Oswald',sans-serif}
+.navbar{background:#1e3c72;padding:15px 0}
+.navbar a{color:#fff;text-decoration:none;font-size:22px;font-weight:700}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.cart-section{background:#fff;border-radius:12px;padding:40px;margin:40px 0;box-shadow:0 4px20px rgba(0,0,0,0.1)}
+.cart-section h2{color:#1e3c72;margin-bottom:30px}
+.empty-state{text-align:center;padding:60px 20px}
+.empty-state i{font-size:60px;color:#ddd;margin-bottom:20px}
+.empty-state h3{color:#666;margin-bottom:10px}
+.empty-state p{color:#999;margin-bottom:20px}
+.empty-state a{display:inline-block;background:#1e3c72;color:#fff;padding:12px 30px;border-radius:8px;text-decoration:none}
+.cart-actions{margin-top:30px;display:flex;gap:15px;justify-content:flex-end}
+.cart-actions a,.cart-actions button{padding:14px 30px;border-radius:8px;font-weight:600;cursor:pointer}
+.btn-checkout{background:#1e3c72;color:#fff;border:none;font-size:16px}
+.btn-continue{background:#fff;color:#333;border:2px solid #ddd;font-size:14px;text-decoration:none;display:inline-block;line-height:1.5}
+.back-link{text-align:center;margin-top:30px}
+.back-link a{color:#1e3c72}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="container">
+<a href="index.html">44Promotions</a>
+</div>
+</nav>
+<div class="container">
+<div class="cart-section">
+<h2>Shopping Cart</h2>
+<div id="cartContent">
+<div class="empty-state">
+<i class="fas fa-shopping-cart"></i>
+<h3>Your cart is empty</h3>
+<p>Add some products to get started</p>
+<a href="products.html">Browse Products</a>
+</div>
+</div>
+</div>
+<div class="back-link">
+<a href="index.html">← Back to Home</a>
+</div>
+</div>
+<script>
+// Simple cart (demo)
+function loadCart() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const container = document.getElementById('cartContent');
+    
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i><h3>Your cart is empty</h3><p>Add some products to get started</p><a href="products.html">Browse Products</a></div>';
+    } else {
+        alert('Demo: Cart has ' + cart.length + ' item(s)');
+    }
+}
+loadCart();
+</script>
+</body>
+</html>

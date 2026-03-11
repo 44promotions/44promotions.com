@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products Management | 44Promotions Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #f3f4f6; }
+.sidebar { width: 260px; background: #1F2937; min-height: 100vh; position: fixed; left: 0; top: 0; }
+.sidebar-logo { padding: 20px; border-bottom: 1px solid #374151; }
+.sidebar-logo img { height: 40px; }
+.sidebar-logo h3 { color: #fff; font-size: 18px; margin-top: 10px; }
+.sidebar-menu { padding: 20px 0; }
+.menu-item { display: block; padding: 14px 24px; color: #9CA3AF; text-decoration: none; transition: all 0.2s; }
+.menu-item:hover, .menu-item.active { background: #374151; color: #F7DC6F; }
+.menu-item i { width: 24px; }
+.main-content { margin-left: 260px; padding: 30px; }
+.top-bar { background: #fff; padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; margin: -30px -30px 30px -30px; }
+.top-bar h4 { margin: 0; color: #1F2937; }
+.btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; }
+.btn-primary { background: #D4AC0D; color: #fff; }
+.btn-primary:hover { background: #9A7D0A; }
+.btn-success { background: #059669; color: #fff; }
+.btn-danger { background: #DC2626; color: #fff; }
+.btn-secondary { background: #6B7280; color: #fff; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.search-bar { display: flex; gap: 12px; margin-bottom: 24px; }
+.search-bar input { flex: 1; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px; }
+.search-bar select { padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px; min-width: 150px; }
+.products-table { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.table { width: 100%; border-collapse: collapse; }
+.table th { background: #F9FAFB; padding: 16px; text-align: left; font-weight: 600; color: #374151; font-size: 13px; text-transform: uppercase; }
+.table td { padding: 16px; border-bottom: 1px solid #E5E7EB; }
+.table tr:hover { background: #F9FAFB; }
+.product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+.badge-active { background: #D1FAE5; color: #059669; }
+.badge-inactive { background: #FEE2E2; color: #DC2626; }
+.action-btns { display: flex; gap: 8px; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+.modal.show { display: flex; align-items: center; justify-content: center; }
+.modal-content { background: #fff; border-radius: 20px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
+.modal-header { padding: 24px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { margin: 0; }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 24px; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 12px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #1F2937; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 15px; }
+.form-group textarea { min-height: 100px; resize: vertical; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #D4AC0D; }
+.form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+.pagination button { padding: 8px 14px; border: 1px solid #E5E7EB; background: #fff; border-radius: 8px; cursor: pointer; }
+.pagination button.active { background: #D4AC0D; color: #fff; border-color: #D4AC0D; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="../44-logo.png" alt="44Promotions">
+    <h3>Admin Panel</h3>
+  </div>
+  <div class="sidebar-menu">
+    <a href="dashboard.html" class="menu-item"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="products.html" class="menu-item active"><i class="fas fa-box"></i> Products</a>
+    <a href="categories.html" class="menu-item"><i class="fas fa-tags"></i> Categories</a>
+    <a href="orders.html" class="menu-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+    <a href="inquiries.html" class="menu-item"><i class="fas fa-envelope"></i> Inquiries</a>
+    <a href="settings.html" class="menu-item"><i class="fas fa-cog"></i> Settings</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="top-bar">
+    <h4>Products Management</h4>
+    <div class="user-info">
+      <span id="adminName">Admin</span>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search products by name, ID...">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+    </select>
+    <select id="statusFilter">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    <button class="btn btn-primary" onclick="openModal()">
+      <i class="fas fa-plus"></i> Add Product
+    </button>
+  </div>
+
+  <div class="products-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price Range</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productsTableBody">
+        <!-- Products loaded by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add New Product</h3>
+      <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" id="productName" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product ID *</label>
+            <input type="text" id="productCode" required>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="productCategory" required>
+              <option value="">Select Category</option>
+              <option value="Bags & Travel">Bags & Travel</option>
+              <option value="Drinkware">Drinkware</option>
+              <option value="Office">Office</option>
+              <option value="Tech">Tech</option>
+              <option value="Outdoor & Sports">Outdoor & Sports</option>
+              <option value="Home & Living">Home & Living</option>
+              <option value="Keychains">Keychains</option>
+              <option value="Health & Beauty">Health & Beauty</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="productStatus">
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="productDescription"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Main Image URL *</label>
+          <input type="url" id="productImage" placeholder="https://... or /images/xxx.jpg" onchange="previewImage(this.value)">
+          <div id="imagePreview" style="margin-top: 12px; display: none;">
+            <img id="previewImg" src="" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #E5E7EB;">
+          </div>
+          <p style="margin-top: 8px; font-size: 12px; color: #6B7280;">
+            图片存放位置: <code style="background: #F3F4F6; padding: 2px 6px; border-radius: 4px;">D:\Openclaw-Local\44promotions.com\images\</code>
+          </p>
+          <p style="font-size: 12px; color: #6B7280;">
+            1. 把图片放到上面文件夹 → 2. 填写文件名如 <code style="background: #F3F4F6; padding: 2px 6px; border-radius: 4px;">/images/FFSAT40041.jpg</code>
+          </p>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price 1 (1-49 pcs)</label>
+            <input type="number" step="0.01" id="price1">
+          </div>
+          <div class="form-group">
+            <label>Price 2 (50-99 pcs)</label>
+            <input type="number" step="0.01" id="price2">
+          </div>
+          <div class="form-group">
+            <label>Price 3 (100-249 pcs)</label>
+            <input type="number" step="0.01" id="price3">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price 4 (250-499 pcs)</label>
+            <input type="number" step="0.01" id="price4">
+          </div>
+          <div class="form-group">
+            <label>Price 5 (500-999 pcs)</label>
+            <input type="number" step="0.01" id="price5">
+          </div>
+          <div class="form-group">
+            <label>Price 6 (1000+ pcs)</label>
+            <input type="number" step="0.01" id="price6">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Colors (comma separated)</label>
+          <input type="text" id="productColors" placeholder="Black, White, Red">
+        </div>
+        
+        <div class="form-group">
+          <label>Price Code</label>
+          <input type="text" id="priceCode" placeholder="RRRRRR/CCCCCC">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Check authentication
+if (localStorage.getItem('adminLoggedIn') !== 'true') {
+  window.location.href = 'index.html';
+}
+
+document.getElementById('adminName').textContent = localStorage.getItem('adminUser') || 'Admin';
+
+let allProducts = [];
+let filteredProducts = [];
+const perPage = 15;
+let currentPage = 1;
+
+// Load products
+async function loadProducts() {
+  try {
+    const response = await fetch('../products_data.js');
+    const text = await response.text();
+    // Extract products array - look for var products = [ or const products = [
+    const match = text.match(/(?:var|const)\s+products\s*=\s*\[([\s\S]*?)\];/);
+    if (match) {
+      const productsJson = '[' + match[1] + ']';
+      allProducts = JSON.parse(productsJson);
+      filteredProducts = [...allProducts];
+      loadCategories();
+      renderProducts();
+    }
+  } catch (e) {
+    console.error('Error loading products:', e);
+  }
+}
+
+function loadCategories() {
+  const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+  const categorySelect = document.getElementById('categoryFilter');
+  categories.forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
+  });
+}
+
+function renderProducts() {
+  const start = (currentPage - 1) * perPage;
+  const pageProducts = filteredProducts.slice(start, start + perPage);
+  
+  const tbody = document.getElementById('productsTableBody');
+  tbody.innerHTML = pageProducts.map(p => {
+    const prices = [p.price1, p.price2, p.price3, p.price4, p.price5, p.price6].filter(x => x);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const priceRange = minPrice === maxPrice ? `$${minPrice.toFixed(2)}` : `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
+    const isActive = p.active === true;
+    
+    return `
+      <tr>
+        <td><img src="${p.images1 || 'https://via.placeholder.com/60'}" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+        <td><strong>${p.id}</strong></td>
+        <td>${p.name}</td>
+        <td>${p.category || '-'}</td>
+        <td>${priceRange}</td>
+        <td><span class="badge ${isActive ? 'badge-active' : 'badge-inactive'}">${isActive ? 'Active' : 'Inactive'}</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-primary btn-sm" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-${isActive ? 'danger' : 'success'} btn-sm" onclick="toggleStatus('${p.id}')">
+              <i class="fas fa-${isActive ? 'eye-slash' : 'eye'}"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+  
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(filteredProducts.length / perPage);
+  const pagination = document.getElementById('pagination');
+  let html = '';
+  
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+  }
+  pagination.innerHTML = html;
+}
+
+function goToPage(page) {
+  currentPage = page;
+  renderProducts();
+}
+
+function filterProducts() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const category = document.getElementById('categoryFilter').value;
+  const status = document.getElementById('statusFilter').value;
+  
+  filteredProducts = allProducts.filter(p => {
+    const matchSearch = !search || (p.name && p.name.toLowerCase().includes(search)) || (p.id && p.id.toLowerCase().includes(search));
+    const matchCategory = !category || p.category === category;
+    const isActive = p.active === true;
+    const matchStatus = !status || (status === 'active' && isActive) || (status === 'inactive' && !isActive);
+    return matchSearch && matchCategory && matchStatus;
+  });
+  
+  currentPage = 1;
+  renderProducts();
+}
+
+document.getElementById('searchInput').addEventListener('input', filterProducts);
+document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+document.getElementById('statusFilter').addEventListener('change', filterProducts);
+
+function openModal(product = null) {
+  document.getElementById('productModal').classList.add('show');
+  document.getElementById('modalTitle').textContent = product ? 'Edit Product' : 'Add New Product';
+  
+  if (product) {
+    document.getElementById('productId').value = product.id;
+    document.getElementById('productName').value = product.name || '';
+    document.getElementById('productCode').value = product.id || '';
+    document.getElementById('productCategory').value = product.category || '';
+    document.getElementById('productStatus').value = (product.active !== false).toString();
+    document.getElementById('productDescription').value = product.description || '';
+    document.getElementById('productImage').value = product.images1 || '';
+    previewImage(product.images1 || '');
+    document.getElementById('price1').value = product.price1 || '';
+    document.getElementById('price2').value = product.price2 || '';
+    document.getElementById('price3').value = product.price3 || '';
+    document.getElementById('price4').value = product.price4 || '';
+    document.getElementById('price5').value = product.price5 || '';
+    document.getElementById('price6').value = product.price6 || '';
+    document.getElementById('productColors').value = product.colors || '';
+    document.getElementById('priceCode').value = product.price_code || '';
+  } else {
+    document.getElementById('productForm').reset();
+    document.getElementById('productId').value = '';
+  }
+}
+
+function closeModal() {
+  document.getElementById('productModal').classList.remove('show');
+}
+
+function editProduct(id) {
+  const product = allProducts.find(p => p.id === id);
+  if (product) {
+    openModal(product);
+  }
+}
+
+function previewImage(url) {
+  const preview = document.getElementById('imagePreview');
+  const img = document.getElementById('previewImg');
+  if (url) {
+    img.src = url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+function saveProduct() {
+  const id = document.getElementById('productId').value;
+  const name = document.getElementById('productName').value;
+  const code = document.getElementById('productCode').value;
+  
+  if (!name || !code) {
+    alert('Please fill in required fields');
+    return;
+  }
+  
+  const productData = {
+    id: code,
+    name: name,
+    category: document.getElementById('productCategory').value,
+    active: document.getElementById('productStatus').value === 'true',
+    description: document.getElementById('productDescription').value,
+    images1: document.getElementById('productImage').value,
+    images: document.getElementById('productImage').value ? [document.getElementById('productImage').value] : [],
+    price1: parseFloat(document.getElementById('price1').value) || 0,
+    price2: parseFloat(document.getElementById('price2').value) || 0,
+    price3: parseFloat(document.getElementById('price3').value) || 0,
+    price4: parseFloat(document.getElementById('price4').value) || 0,
+    price5: parseFloat(document.getElementById('price5').value) || 0,
+    price6: parseFloat(document.getElementById('price6').value) || 0,
+    colors: document.getElementById('productColors').value,
+    price_code: document.getElementById('priceCode').value
+  };
+  
+  // Get existing products
+  let productsData = localStorage.getItem('adminProducts');
+  let products = productsData ? JSON.parse(productsData) : [...allProducts];
+  
+  const existingIndex = products.findIndex(p => p.id === id);
+  if (existingIndex >= 0) {
+    products[existingIndex] = productData;
+  } else {
+    products.unshift(productData);
+  }
+  
+  // Save to localStorage (in production, this would save to server)
+  localStorage.setItem('adminProducts', JSON.stringify(products));
+  
+  // Reload
+  allProducts = products;
+  filteredProducts = [...allProducts];
+  renderProducts();
+  closeModal();
+  
+  alert('Product saved successfully!');
+}
+
+function toggleStatus(id) {
+  if (confirm('Are you sure you want to change this product status?')) {
+    let productsData = localStorage.getItem('adminProducts');
+    let products = productsData ? JSON.parse(productsData) : [...allProducts];
+    
+    const index = products.findIndex(p => p.id === id);
+    if (index >= 0) {
+      products[index].active = !products[index].active;
+      localStorage.setItem('adminProducts', JSON.stringify(products));
+      allProducts = products;
+      filteredProducts = [...allProducts];
+      renderProducts();
+    }
+  }
+}
+
+function deleteProduct(id) {
+  if (confirm('Are you sure you want to delete this product? This cannot be undone.')) {
+    let productsData = localStorage.getItem('adminProducts');
+    let products = productsData ? JSON.parse(productsData) : [...allProducts];
+    
+    const index = products.findIndex(p => p.id === id);
+    if (index >= 0) {
+      products.splice(index, 1);
+      localStorage.setItem('adminProducts', JSON.stringify(products));
+      allProducts = products;
+      filteredProducts = [...allProducts];
+      renderProducts();
+    }
+  }
+}
+
+function logout() {
+  localStorage.removeItem('adminLoggedIn');
+  localStorage.removeItem('adminUser');
+  window.location.href = 'index.html';
+}
+
+// Check for add action from URL
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('action') === 'add') {
+  openModal();
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
