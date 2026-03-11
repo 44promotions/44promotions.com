@@ -30,8 +30,8 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Large folders and files
-images/
+# Large folders and files (exclude images for now)
+# images/
 新品资料*/
 *.zip
 products_backup*
