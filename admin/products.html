@@ -179,12 +179,26 @@ body { font-family: 'DM Sans', sans-serif; background: #f3f4f6; }
           <div id="imagePreview" style="margin-top: 12px; display: none;">
             <img id="previewImg" src="" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #E5E7EB;">
           </div>
-          <p style="margin-top: 8px; font-size: 12px; color: #6B7280;">
-            图片存放位置: <code style="background: #F3F4F6; padding: 2px 6px; border-radius: 4px;">D:\Openclaw-Local\44promotions.com\images\</code>
-          </p>
-          <p style="font-size: 12px; color: #6B7280;">
-            1. 把图片放到上面文件夹 → 2. 填写文件名如 <code style="background: #F3F4F6; padding: 2px 6px; border-radius: 4px;">/images/FFSAT40041.jpg</code>
-          </p>
+        </div>
+        
+        <div class="form-group">
+          <label>Image 2 URL (optional)</label>
+          <input type="url" id="productImage2" placeholder="https://... or /images/xxx.jpg">
+        </div>
+        
+        <div class="form-group">
+          <label>Image 3 URL (optional)</label>
+          <input type="url" id="productImage3" placeholder="https://... or /images/xxx.jpg">
+        </div>
+        
+        <div class="form-group">
+          <label>Image 4 URL (optional)</label>
+          <input type="url" id="productImage4" placeholder="https://... or /images/xxx.jpg">
+        </div>
+        
+        <div class="form-group">
+          <label>Image 5 URL (optional)</label>
+          <input type="url" id="productImage5" placeholder="https://... or /images/xxx.jpg">
         </div>
         
         <div class="form-row">
@@ -364,6 +378,10 @@ function openModal(product = null) {
     document.getElementById('productDescription').value = product.description || '';
     document.getElementById('productImage').value = product.images1 || '';
     previewImage(product.images1 || '');
+    document.getElementById('productImage2').value = product.images2 || '';
+    document.getElementById('productImage3').value = product.images3 || '';
+    document.getElementById('productImage4').value = product.images4 || '';
+    document.getElementById('productImage5').value = product.images5 || '';
     document.getElementById('price1').value = product.price1 || '';
     document.getElementById('price2').value = product.price2 || '';
     document.getElementById('price3').value = product.price3 || '';
